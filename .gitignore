@@ -1,0 +1,6 @@
+# Output directories from runs
+*_audit_runs/
+smoke_*/
+__pycache__/
+*.pyc
+.DS_Store
