@@ -1,0 +1,5 @@
+omega,pmax,min_gap,certified,pi_complete_m,pi_complete_m_plus_k,prime_support,runtime_sec
+9,23,>100,False,,,,3891.053
+10,29,>100,False,,,,7942.119
+11,31,>100,False,,,,16088.745
+12,37,>100,False,,,,32506.579

@@ -192,6 +192,27 @@ Each `summary_k{k}_omega_{omega}.json` includes Nr_Solver's standard fields plus
 }
 ```
 
+## Results
+
+### min_gap table (sweep_k, max_m=10⁹, k=1..100)
+
+See [`min_gap_table.csv`](min_gap_table.csv) and [`min_gap_table.json`](min_gap_table.json).
+
+| ω  | pmax | min_gap | certified | min miss_star | Runtime |
+|----|------|---------|-----------|--------------|---------|
+| 9  | 23   | >100    | False     | 1            | 65 min  |
+| 10 | 29   | >100    | False     | 2            | 132 min |
+| 11 | 31   | >100    | False     | 3            | 268 min |
+| 12 | 37   | >100    | False     | 3            | 542 min |
+
+**Zero π-complete hits** across all 400 (k,ω) pairs tested (ω=9..12, k=1..100).
+
+`certified=False` because k>1 runs are bounded by max_m (no Størmer-complete guarantee for k>1). The k=1 rows are certified complete by the Størmer-Lehmer theorem.
+
+**miss_star** is the minimum number of primes missing from P_ω across all candidates and all k values. The rising gradient (1→2→3) shows the system retreating from π-completeness as ω increases.
+
+Runtime doubles per ω step (proportional to 2^ω masks); ω=13 would require ~18 hours for k=1..100.
+
 ## Scientific Context
 
 The primorial p_k# = product of first k primes. Nr_Solver established that n=633,555 is the last n with n(n+1) having prime support exactly P₈ (gap=1).
