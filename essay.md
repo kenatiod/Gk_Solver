@@ -340,7 +340,99 @@ The pattern is clear: single-prime-gap pairs from the ω=8 search, when multipli
 
 ---
 
-## 11. Two Complementary Views of the Same Problem
+## 11. A392344 b-file Analysis: Three Structural Families
+
+The b-file `b392344.txt` lists 200 terms of A392344, and the companion program `b392344_Checker.py` verifies each entry and annotates its structural type. Running the checker against all 200 terms confirms that every entry is a valid π-complete product. The annotations reveal that the terms fall into three structurally distinct families.
+
+### 11.1 Single gap fills (the dominant mechanism)
+
+The majority of terms where n divides m are **single gap fills**: m = n × j where the pair (j, j+1) is P_ω-smooth but missing exactly one prime from P_ω, and that missing prime is n itself. Multiplying both elements by n inserts the missing prime into the product:
+
+```
+m · (m+n) = n² · j · (j+1)
+```
+
+Since j · (j+1) covers all of P_ω except prime p=n, and n² contributes p², the full product has support exactly P_ω.
+
+This mechanism accounts for a(5), a(7), a(10), a(11), a(14), a(15), a(17), a(20), a(21), and dozens more. It is the primary way large a(n) values arise: a(17) = 1,361,042,848 comes from j × (j+1) missing the prime 17 from P₁₁ (primes through 31).
+
+### 11.2 Double gap fills — and their family structure
+
+A more intricate mechanism appears when a P_ω-smooth pair (j, j+1) is missing **two** primes from P_ω. Any gap n divisible by both missing primes fills them simultaneously.
+
+The most striking example in the first 200 terms is the **j = 8,268,799 family**. The pair (8,268,799, 8,268,800) has prime support P₁₀ \ {3, 13} — all of {2, 5, 7, 11, 17, 19, 23, 29} but missing both 3 and 13. Any n divisible by lcm(3, 13) = 39 produces a π-complete P₁₀ product:
+
+```
+n =  39 = 3×13         m =  39 × 8,268,799 =   322,483,161
+n =  78 = 2×3×13       m =  78 × 8,268,799 =   644,966,322
+n = 117 = 3²×13        m = 117 × 8,268,799 =   967,449,483
+n = 156 = 4×3×13       m = 156 × 8,268,799 = 1,289,932,644
+n = 195 = 5×3×13       m = 195 × 8,268,799 = 1,612,415,805
+```
+
+All five entries appear in the b-file and are verified π-complete for P₁₀. The checker labels all five "Double gap fill" because the base pair j·(j+1) has gap_count=2 (two missing primes).
+
+The product factorization for n=39 is:
+
+```
+{2:10, 3:2, 5:2, 7:2, 11:1, 13:2, 17:1, 19:1, 23:2, 29:1}  (P₁₀-complete)
+```
+
+The factor of 39² = (3×13)² contributes the missing 3² and 13², which together with the contributions from j and j+1 complete P₁₀.
+
+A second double-gap-fill family anchors at n=145=5×29 and n=190=2×5×19 (different base pair j, two different missing primes in each case).
+
+### 11.3 Direct pairs (m not divisible by n)
+
+Many terms are **not** derived from any gap-plug construction. These are pairs (m, m+n) where the π-completeness arises directly, not by scaling a smaller near-miss. They span a wide range of ω values:
+
+| n | m | ω | Factorization highlights |
+|---|---|---|--------------------------|
+| 29 | 2,437,120 | 9 | P₉ pair, primes through 23 |
+| 37 | 373,490 | 7 | P₇ pair, primes through 17 |
+| 43 | 5,767,125 | 6 | P₆ pair, pmax=13; very small ω for a large gap |
+| 89 | 154,791 | 6 | P₆ pair, pmax=13 |
+| 131 | 301,665 | 8 | Direct P₈, not from 633,555 family |
+| 137 | 823,543 = 7⁷ | 6 | m is a pure prime power; product is P₆ |
+
+The n=137, m=823,543 = 7⁷ case is particularly clean: m is entirely a seventh power of 7. The product 7⁷ × (7⁷+137) factors as P₆ = {2,3,5,7,11,13}, an intrinsic π-complete pair with no gap-plug ancestry.
+
+### 11.4 Omega distribution across the first 200 terms
+
+The checker output reveals the ω distribution of A392344 terms:
+
+| ω | Largest prime | Representative n values |
+|---|--------------|------------------------|
+| 6 | 13 | 43, 86, 89, 103, 129, 137, 172 |
+| 7 | 17 | 37, 59, 74, 111, 118, 131 (partial) |
+| 8 | 19 | 1–9, 12, 13, 16, 24, 26, 27, ... (majority) |
+| 9 | 23 | 29, 47, 61, 125, 167 |
+| 10 | 29 | 11, 17, 19, 22, 23, 33, 34, 38, 39, 40, ... |
+| 11 | 31 | 41, 82, 95, 123, 161 |
+| 12 | 37 | 49, 68, 98, 121, 136, 147, 196 |
+| 13 | 41 | 95, 190 |
+
+The ω=8 pairs dominate the sequence, exactly as expected from the Nr_Solver result: the richest source of π-complete raw material is the ω=8 level, where the pairs (633,555, 633,556), (709,631, 709,632), and (5,909,760, 5,909,761) feed most of the gap-plug constructions.
+
+### 11.5 The n=121 anomaly: a direct P₁₂ pair
+
+The entry a(121) = 84,693,984,375 is the most surprising in the first 200 terms. The checker shows:
+
+```
+n=121   m=84,693,984,375
+m*(m+121) factorization: {2:4, 3:1, 5:7, 7:1, 11:2, 13:1, 17:1, 19:2, 23:1, 29:1, 31:1, 37:2}
+ω = 12,  largest prime = 37  (the 12th prime)  →  P₁₂-complete
+```
+
+This is a **direct P₁₂ pair at gap 121 = 11²**. It is not a gap fill (m is not divisible by 121), and it is not derived from any ω=11 near-miss in the database. It is simply a large pair that happens to hit P₁₂ exactly at gap 121.
+
+The note 5⁷ in the factorization (five raised to the seventh power) suggests this pair sits in a high-multiplicity Pell orbit where a single prime (5) contributes a large exponent. The presence of 37² likewise indicates the family repeats the largest prime squared — a signature of a fundamental Pell solution that has been iterated once. This is exactly the kind of pair Gk_Solver would find in a fixed_k sweep at k=121 for ω=12, if max_m were set high enough (~85 billion).
+
+This entry underscores an important point: while the ω=8 level dominates A392344 for small n, the sequence is not exclusively an ω=8 phenomenon. Isolated high-ω direct pairs can appear at specific gaps, and their existence does not contradict the Gk_Solver sweep results (which cover max_m=10⁹, well below 84 billion).
+
+---
+
+## 12. Two Complementary Views of the Same Problem
 
 The relationship between A392344 and min_gap(ω) is best understood as two complementary slices of a two-dimensional landscape. One axis is the gap k; the other is the prime count ω.
 
@@ -355,7 +447,7 @@ The sweep result min_gap(ω) > 100 for ω=9..12 places a lower bound on the vert
 
 ---
 
-## 12. The Proof Architecture
+## 13. The Proof Architecture
 
 The computational results are not merely curiosities — they form part of a proof strategy.
 
@@ -371,7 +463,7 @@ The Gk_Solver sweep results are the computational core of Step 2, providing the 
 
 ---
 
-## 13. What Makes This Hard
+## 14. What Makes This Hard
 
 Several features of the problem conspire to make computational progress difficult.
 
@@ -385,7 +477,7 @@ Several features of the problem conspire to make computational progress difficul
 
 ---
 
-## 14. Conclusion
+## 15. Conclusion
 
 Gk_Solver represents the computational frontier of a line of research that begins with the elementary observation that smoothness and completeness are competing properties: the more primes you require in a product, the harder it is to have all of them appear simultaneously in a product of two nearby integers.
 
